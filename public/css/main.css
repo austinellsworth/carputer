@@ -1,0 +1,32 @@
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'Play', sans-serif;
+  src: url(./assets/fonts/Play-Regular.ttf) format("truetype");
+}
+body {
+  box-sizing: border-box;
+  margin: 0;
+}
+#container {
+  display: flex;
+}
+#map {
+  width: 50%;
+  height: 240px;
+  background-color: grey;
+}
+#car-info {
+  width: 50%;
+  height: 240px;
+  background-color: grey;
+}
+#speed {
+  font-family: "Play";
+  text-align: center;
+  font-size: 80px;
+}

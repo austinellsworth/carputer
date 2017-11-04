@@ -1,0 +1,21 @@
+{
+  "name": "rav4pi",
+  "version": "1.0.0",
+  "description": "Files for my Rav4Pi Raspberry Pi Carputer",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Ellsworth",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "node-gpsd": "^0.3.0",
+    "request": "^2.83.0",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}
