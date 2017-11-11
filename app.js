@@ -7,12 +7,19 @@ const PATH = require('path')
 const REQUEST = require('request')
 const APIKEY = require('./private/API_KEY')
 const GPSD = require('node-gpsd')
+// const PLAYMUSIC = require('playmusic')
+// const MUSIC = new PLAYMUSIC()
+// const GOOGLE = require('./private/playmusic')
 
 // ==================== MISC SETUP ====================
 
 APP.set('view engine', 'ejs')
 APP.use('/assets/', EXPRESS.static(PATH.join(__dirname, '/public')))
-
+APP.use('/', EXPRESS.static(__dirname))
+// MUSIC.init(GOOGLE, function (err) {
+//   if (err) console.error(err)
+//   // place code here
+// })
 var gpsData = {}
 
 // ==================== SETUP FOR GPSD DAEMON ====================
@@ -49,8 +56,27 @@ APP.get('/', function (req, res) {
       }
     }, 1000)
   })
-  res.sendFile('/home/pi/carputer/index.html')
+  res.sendFile('./index.html')
 })
+
+// APP.get('/music/', function (req, res) {
+//   MUSIC.getPlayListEntries(function (err, data) {
+//     if (err) {
+//       console.log(err)
+//     }
+//     let printData = data.data.items
+//     console.log(printData)
+//     res.send(JSON.stringify(data.data.items))
+//   })
+// })
+
+// APP.get('/music/:playlist', function (req, res) {
+//   console.log(req.params.playlist)
+//   MUSIC.getStream('T42a4nws5tlpvwbn2yegdadinuq', function (data, blah) {
+//     console.log(data, blah)
+//     blah.pipe(res)
+//   })
+// })
 
 // ==================== GOOGLE MAPS API ====================
 

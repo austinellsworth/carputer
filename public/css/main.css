@@ -12,15 +12,21 @@ body {
   box-sizing: border-box;
   margin: 0;
 }
+select {
+  width: 100%;
+  font-size: 30px;
+}
+option {
+  text-align: center;
+  font-size: 30px;
+}
 #container {
   display: flex;
+  flex-wrap: wrap;
 }
-#map {
-  width: 50%;
-  height: 240px;
-  background-color: grey;
-}
-#car-info {
+#map,
+#car-info,
+#music {
   width: 50%;
   height: 240px;
   background-color: grey;

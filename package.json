@@ -12,6 +12,7 @@
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "node-gpsd": "^0.3.0",
+    "playmusic": "^2.3.0",
     "request": "^2.83.0",
     "socket.io": "^2.0.4"
   },
