@@ -20,6 +20,18 @@ option {
   text-align: center;
   font-size: 30px;
 }
+.artist {
+  width: 150px;
+}
+.title {
+  width: 250px;
+}
+#music-controls {
+  text-align: center;
+}
+#now-playing td {
+  font-weight: bold;
+}
 #container {
   display: flex;
   flex-wrap: wrap;
