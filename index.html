@@ -13,14 +13,42 @@
       <h1 id="speed"></h1>
     </div>
     <div id="music">
-      <select id="playlists"></select>
-      <select id="songs"></select>
+      <div id="music-controls">
+        <select id="playlists"></select>
+        <button id="back">BACK</button>
+        <button id="play">PLAY</button>
+        <button id="forward">FORWARD</button>
+        <button id="shuffle">SHUFFLE</button>
+      </div>
+      <table>
+        <tr>
+          <td class="artist"></td>
+          <td class="title"></td>
+        </tr>
+        <tr>
+          <td class="artist"></td>
+          <td class="title"></td>
+        </tr>
+        <tr id="now-playing">
+          <td class="artist"></td>
+          <td class="title"></td>
+        </tr>
+        <tr>
+          <td class="artist"></td>
+          <td class="title"></td>
+        </tr>
+        <tr>
+          <td class="artist"></td>
+          <td class="title"></td>
+        </tr>
+
+      </table>
     </div>
   </div>
   
   <script async defer src="private/apikey"></script>
   <script src="assets/js/lib/socket.io.slim.js"></script>
   <script src="assets/js/main.js"></script>
-  <!-- <script src="assets/js/music.js"></script> -->
+  <script src="assets/js/music.js"></script>
 </body>
 </html>

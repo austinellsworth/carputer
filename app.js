@@ -7,19 +7,19 @@ const PATH = require('path')
 const REQUEST = require('request')
 const APIKEY = require('./private/API_KEY')
 const GPSD = require('node-gpsd')
-// const PLAYMUSIC = require('playmusic')
-// const MUSIC = new PLAYMUSIC()
-// const GOOGLE = require('./private/playmusic')
+const PLAYMUSIC = require('playmusic')
+const MUSIC = new PLAYMUSIC()
+const GOOGLE = require('./private/playmusic')
 
 // ==================== MISC SETUP ====================
 
 APP.set('view engine', 'ejs')
 APP.use('/assets/', EXPRESS.static(PATH.join(__dirname, '/public')))
 APP.use('/', EXPRESS.static(__dirname))
-// MUSIC.init(GOOGLE, function (err) {
-//   if (err) console.error(err)
-//   // place code here
-// })
+MUSIC.init(GOOGLE, function (err) {
+  if (err) console.error(err)
+  // place code here
+})
 var gpsData = {}
 
 // ==================== SETUP FOR GPSD DAEMON ====================
@@ -59,24 +59,36 @@ APP.get('/', function (req, res) {
   res.sendFile('./index.html')
 })
 
-// APP.get('/music/', function (req, res) {
-//   MUSIC.getPlayListEntries(function (err, data) {
-//     if (err) {
-//       console.log(err)
-//     }
-//     let printData = data.data.items
-//     console.log(printData)
-//     res.send(JSON.stringify(data.data.items))
-//   })
-// })
+// client makes request to /music, gets back obj with playlists and all their songs
+APP.get('/music/', function (req, res) {
+  MUSIC.getPlayListEntries(function (err, entries) {
+    if (err) {
+      console.log(err)
+    } else {
+      MUSIC.getPlayLists(function (err, playlists) {
+        if (err) {
+          console.log(err)
+        } else {
+          let allPlaylistInfo = {}
+          allPlaylistInfo.playlists = playlists.data.items
+          allPlaylistInfo.songs = entries.data.items
+          res.send(JSON.stringify(allPlaylistInfo))
+        }
+      })
+    }
+  })
+})
 
-// APP.get('/music/:playlist', function (req, res) {
-//   console.log(req.params.playlist)
-//   MUSIC.getStream('T42a4nws5tlpvwbn2yegdadinuq', function (data, blah) {
-//     console.log(data, blah)
-//     blah.pipe(res)
-//   })
-// })
+// client requests song stream by storeId
+APP.get('/music/:song', function (req, res) {
+  MUSIC.getStream(req.params.song, function (err, stream) {
+    if (err) {
+      console.log(err)
+    } else {
+      stream.pipe(res)
+    }
+  })
+})
 
 // ==================== GOOGLE MAPS API ====================
 
