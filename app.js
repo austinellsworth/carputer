@@ -6,7 +6,6 @@ const PATH = require('path')
 const IO = require('socket.io')(SERVER)
 const REQUEST = require('request')
 const APIKEY = require('./private/API_KEY')
-const GPSD = require('node-gpsd')
 const GPS = require('./modules/gps')
 const PLAYLISTS = require('./modules/music').PLAYLISTS
 const MUSIC = require('./modules/music').MUSIC
@@ -19,7 +18,7 @@ APP.use('/', EXPRESS.static(__dirname))
 
 // ==================== SETUP FOR GPSD DAEMON ====================
 
-// GPS.DAEMON.start(GPS.daemonInit)
+GPS.DAEMON.start(GPS.daemonInit)
 
 // ==================== SETUP FOR GOOGLE MUSIC ====================
 
