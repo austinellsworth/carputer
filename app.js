@@ -78,6 +78,6 @@ APP.get('/private/apikey/', function (req, res) {
 })
 
 // ==================== LISTEN ON PORT 8000 ====================
-SERVER.listen(8000, function () {
+SERVER.listen(process.env.PORT, function () {
   console.log('Rav4Pi server is running!')
 })
