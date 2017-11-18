@@ -42,10 +42,10 @@ APP.get('/', function (req, res) {
 
 // client makes request to /music, gets back obj with playlists and all their songs
 APP.get('/music/', function (req, res) {
-  if (!PLAYLISTS.names) {
+  if (!PLAYLISTS.playlists.names) {
     PLAYLISTS.getData()
   }
-  res.send(JSON.stringify(PLAYLISTS))
+  res.send(JSON.stringify(PLAYLISTS.playlists))
 })
 
 // client requests song stream by storeId
