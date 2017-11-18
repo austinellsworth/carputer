@@ -9,6 +9,7 @@
   "author": "Austin Ellsworth",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "node-gpsd": "^0.3.0",
     "playmusic": "^2.3.0",

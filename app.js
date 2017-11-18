@@ -1,11 +1,11 @@
 // ==================== REQUIRE STATEMENTS ====================
+require('dotenv').config()
 const EXPRESS = require('express')
 const APP = EXPRESS()
 const SERVER = require('http').createServer(APP)
 const PATH = require('path')
 const IO = require('socket.io')(SERVER)
 const REQUEST = require('request')
-const APIKEY = require('./private/API_KEY')
 const GPS = require('./modules/gps')
 const PLAYLISTS = require('./modules/music').PLAYLISTS
 const MUSIC = require('./modules/music').MUSIC
@@ -17,7 +17,7 @@ APP.use('/', EXPRESS.static(__dirname))
 
 // ==================== SETUP FOR GPSD DAEMON ====================
 
-GPS.DAEMON.start(GPS.daemonInit)
+// GPS.DAEMON.start(GPS.daemonInit)
 
 // ==================== SETUP FOR GOOGLE MUSIC ====================
 
@@ -67,7 +67,7 @@ APP.get('/music/:song', function (req, res) {
 APP.get('/private/apikey/', function (req, res) {
   let pageres = res
   // This is a weird way to get a script file to the client, but I did it this way to keep the API key private.
-  REQUEST(APIKEY, function (err, res, body) {
+  REQUEST(process.env.API_KEY, function (err, res, body) {
     if (err) {
       console.log(err)
     } else if (res.statusCode === 200) {

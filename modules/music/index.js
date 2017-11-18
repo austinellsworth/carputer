@@ -1,6 +1,5 @@
 const PLAYMUSIC = require('playmusic')
 const MUSIC = new PLAYMUSIC()
-const GOOGLE = require('../../private/playmusic')
 
 // Everything for the initial setup of Google Play Music is in this PLAYLISTS constant
 // On the main app.js file, we just need to call PLAYLISTS.getData()
@@ -28,7 +27,7 @@ const PLAYLISTS = {
     })
   },
   getData: function () {
-    MUSIC.init(GOOGLE, function (err) {
+    MUSIC.init({email: process.env.EMAIL, password: process.env.PASSWORD}, function (err) {
       if (err) {
         console.log(err)
       }
