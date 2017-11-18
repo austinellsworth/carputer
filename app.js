@@ -16,8 +16,9 @@ APP.use('/assets/', EXPRESS.static(PATH.join(__dirname, '/public')))
 APP.use('/', EXPRESS.static(__dirname))
 
 // ==================== SETUP FOR GPSD DAEMON ====================
-
-// GPS.DAEMON.start(GPS.daemonInit)
+if (process.env.ENVIRONMENT !== 'dev') {
+  GPS.DAEMON.start(GPS.daemonInit)
+}
 
 // ==================== SETUP FOR GOOGLE MUSIC ====================
 
@@ -66,7 +67,7 @@ APP.get('/music/:song', function (req, res) {
 
 APP.get('/private/apikey/', function (req, res) {
   let pageres = res
-  // This is a weird way to get a script file to the client, but I did it this way to keep the API key private.
+  // Keep the API key private.
   REQUEST(process.env.API_KEY, function (err, res, body) {
     if (err) {
       console.log(err)
