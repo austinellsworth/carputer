@@ -15,7 +15,7 @@ MUSIC.init = function () {
     let serverResponse = JSON.parse(this.responseText)
     MUSIC.playlists = serverResponse
     updatePlaylistDisplay(serverResponse)
-    // assignSongstoPlaylists(serverResponse)
+    MUSIC.changePlaylist(MUSIC.playlists.names[0].id)
   }
   var oReq = new XMLHttpRequest()
   oReq.addEventListener('load', reqListener)
@@ -37,7 +37,6 @@ MUSIC.init = function () {
 MUSIC.changePlaylist = function (selection) {
   MUSIC.currentPlaylistSongs = MUSIC.playlists[selection]
   MUSIC.currentSongIndex = 0
-  MUSIC.updateSongsDisplay()
   MUSIC.playSong()
 }
 
