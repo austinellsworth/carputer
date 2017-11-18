@@ -13,8 +13,9 @@ const MUSIC = {
 MUSIC.init = function () {
   function reqListener () {
     let serverResponse = JSON.parse(this.responseText)
+    MUSIC.playlists = serverResponse
     updatePlaylistDisplay(serverResponse)
-    assignSongstoPlaylists(serverResponse)
+    // assignSongstoPlaylists(serverResponse)
   }
   var oReq = new XMLHttpRequest()
   oReq.addEventListener('load', reqListener)
@@ -23,25 +24,11 @@ MUSIC.init = function () {
 
   // add playlists to select menu
   function updatePlaylistDisplay (data) {
-    data['playlists'].forEach(function (playlist) {
+    data.names.forEach(function (playlist) {
       let option = document.createElement('option')
       option.value = playlist.id
       option.innerText = playlist.name
       document.getElementById('playlists').appendChild(option)
-    })
-  }
-  // loop through playlists and add them as properties to the playlists variable
-  // loop through all songs and add each one to the corresponding playlist's array
-  function assignSongstoPlaylists (data) {
-    data.playlists.forEach(function (playlist) {
-      let id = playlist.id
-      MUSIC.playlists[id] = []
-    })
-    data.songs.forEach(function (song) {
-      let plistId = song.playlistId
-      if (MUSIC.playlists[plistId]) {
-        MUSIC.playlists[plistId].push(song)
-      }
     })
   }
 }
