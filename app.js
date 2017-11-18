@@ -24,25 +24,25 @@ var gpsData = {}
 
 // ==================== SETUP FOR GPSD DAEMON ====================
 
-// const DAEMON = new GPSD.Daemon()
+const DAEMON = new GPSD.Daemon()
 
-// function daemonInit () {
-//   console.log('GPSD Daemon Started')
+function daemonInit () {
+  console.log('GPSD Daemon Started')
 
-//   const LISTENER = new GPSD.Listener()
+  const LISTENER = new GPSD.Listener()
 
-//   LISTENER.on('TPV', function (tpv) {
-//     gpsData = tpv
-//     return gpsData
-//   })
+  LISTENER.on('TPV', function (tpv) {
+    gpsData = tpv
+    return gpsData
+  })
 
-//   LISTENER.connect(function () {
-//     console.log('Connected')
-//     LISTENER.watch()
-//   })
-// }
+  LISTENER.connect(function () {
+    console.log('Connected')
+    LISTENER.watch()
+  })
+}
 
-// DAEMON.start(daemonInit)
+DAEMON.start(daemonInit)
 
 // ============================================================
 // ==================== ROUTES SETUP ====================
