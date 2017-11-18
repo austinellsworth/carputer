@@ -12,7 +12,6 @@ const MUSIC = require('./modules/music').MUSIC
 
 // ==================== MISC SETUP ====================
 
-APP.set('view engine', 'ejs')
 APP.use('/assets/', EXPRESS.static(PATH.join(__dirname, '/public')))
 APP.use('/', EXPRESS.static(__dirname))
 
@@ -24,20 +23,25 @@ GPS.DAEMON.start(GPS.daemonInit)
 
 PLAYLISTS.getData()
 
-// ============================================================
-// ==================== ROUTES SETUP ====================
-// ============================================================
+// ==================== SETUP FOR SOCKET.IO ====================
+
+IO.on('connection', function (socket) {
+  console.log('Socket.io running')
+  setInterval(function () {
+    if (GPS.data) {
+      socket.emit('gpsData', GPS.data)
+    }
+  }, 1000)
+})
+
+// ==================== ROUTES ====================
+
+// Send Index page
 APP.get('/', function (req, res) {
-  IO.on('connection', function (socket) {
-    console.log('Socket.io running')
-    setInterval(function () {
-      if (GPS.data) {
-        socket.emit('gpsData', GPS.data)
-      }
-    }, 1000)
-  })
   res.sendFile('./index.html')
 })
+
+// ==================== GOOGLE PLAY MUSIC ROUTES ====================
 
 // client makes request to /music, gets back obj with playlists and all their songs
 APP.get('/music/', function (req, res) {
@@ -58,7 +62,7 @@ APP.get('/music/:song', function (req, res) {
   })
 })
 
-// ==================== GOOGLE MAPS API ====================
+// ==================== GOOGLE MAPS API ROUTE ====================
 
 APP.get('/private/apikey/', function (req, res) {
   let pageres = res
