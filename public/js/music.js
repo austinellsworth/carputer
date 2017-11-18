@@ -1,17 +1,16 @@
 // TODO: make buttons prettier, deal with play() promises better (use load() instead?),
 // give variables better names, automatically go to next song,
 // clean this file up!
-var playlists = {}
-var playlistSongs = []
-var currentSongIndex = 0
-var nowPlaying
 
-// ================================================================================
-// ==================== Run right away to get playlists and songs ====================
-// ================================================================================
+// Put everything into one const to minimize global variables/functions
+const MUSIC = {
+  playlists: {},
+  currentSongIndex: 0,
+  currentPlaylistSongs: []
+}
 
-// on page load, ask server for list of playlists and songs.
-(function getPlaylistsFromServer () {
+// Ask server for list of playlists and songs.
+MUSIC.init = function () {
   function reqListener () {
     let serverResponse = JSON.parse(this.responseText)
     updatePlaylistDisplay(serverResponse)
@@ -36,118 +35,99 @@ var nowPlaying
   function assignSongstoPlaylists (data) {
     data.playlists.forEach(function (playlist) {
       let id = playlist.id
-      playlists[id] = []
+      MUSIC.playlists[id] = []
     })
     data.songs.forEach(function (song) {
       let plistId = song.playlistId
-      if (playlists[plistId]) {
-        playlists[plistId].push(song)
+      if (MUSIC.playlists[plistId]) {
+        MUSIC.playlists[plistId].push(song)
       }
     })
-    return playlists
   }
-})()
-
-// ================================================================================
-// ==================== Functions for music controls ====================
-// ================================================================================
+}
 
 // when a playlist is selected, go through list of songs and make array of songs belonging to that playlist
-function changePlaylist (selection) {
-  playlistSongs = playlists[selection]
-  currentSongIndex = 0
-  updateSongsDisplay()
-  playSong()
+MUSIC.changePlaylist = function (selection) {
+  MUSIC.currentPlaylistSongs = MUSIC.playlists[selection]
+  MUSIC.currentSongIndex = 0
+  MUSIC.updateSongsDisplay()
+  MUSIC.playSong()
 }
 
 // function for play/pause button
-function playPause () {
-  if (nowPlaying && nowPlaying.paused) {
-    nowPlaying.play()
-  } else if (nowPlaying && !nowPlaying.paused) {
-    nowPlaying.pause()
+MUSIC.playPause = function () {
+  if (MUSIC.songNowPlaying && MUSIC.songNowPlaying.paused) {
+    MUSIC.songNowPlaying.play()
+  } else if (MUSIC.songNowPlaying && !MUSIC.songNowPlaying.paused) {
+    MUSIC.songNowPlaying.pause()
   } else {
-    playSong()
+    MUSIC.playSong()
   }
 }
 
 // function for back button
-function songBack () {
-  if (currentSongIndex > 0) {
-    currentSongIndex--
+MUSIC.songBack = function () {
+  if (MUSIC.currentSongIndex > 0) {
+    MUSIC.currentSongIndex--
   } else {
-    currentSongIndex = playlistSongs.length - 1
+    MUSIC.currentSongIndex = MUSIC.currentPlaylistSongs.length - 1
   }
-  playSong()
+  MUSIC.playSong()
 }
 
 // function for forward button
-function songForward () {
-  if (currentSongIndex < playlistSongs.length - 1) {
-    currentSongIndex++
+MUSIC.songForward = function () {
+  if (MUSIC.currentSongIndex < MUSIC.currentPlaylistSongs.length - 1) {
+    MUSIC.currentSongIndex++
   } else {
-    currentSongIndex = 0
+    MUSIC.currentSongIndex = 0
   }
-  playSong()
+  MUSIC.playSong()
 }
 
 // function for shuffle button
-function songShuffle () {
-  shuffleSongs(playlistSongs)
-  currentSongIndex = 0
-  playSong()
+MUSIC.songShuffle = function () {
+  MUSIC.shuffleSongs(MUSIC.currentPlaylistSongs)
+  MUSIC.currentSongIndex = 0
+  MUSIC.playSong()
 }
-// set function to use below with event listeners. gets index of current song, pulls that from playlistSongs array, plays it
-function playSong () {
-  if (nowPlaying) {
-    nowPlaying.pause()
+// set function to use below with event listeners. gets index of current song, pulls that from MUSIC.currentPlaylistSongs array, plays it
+MUSIC.playSong = function () {
+  if (MUSIC.songNowPlaying) {
+    MUSIC.songNowPlaying.pause()
   }
-  nowPlaying = new Audio(['/music/' + playlistSongs[currentSongIndex].track.storeId])
-  nowPlaying.addEventListener('ended', songForward)
-  nowPlaying.play()
-  updateSongsDisplay()
+  MUSIC.songNowPlaying = new Audio(['/music/' + MUSIC.currentPlaylistSongs[MUSIC.currentSongIndex].track.storeId])
+  MUSIC.songNowPlaying.addEventListener('ended', MUSIC.songForward)
+  MUSIC.songNowPlaying.play()
+  MUSIC.updateSongsDisplay()
 }
 
 // update the table which displays artist/title
-function updateSongsDisplay () {
+MUSIC.updateSongsDisplay = function () {
   let artists = document.getElementsByClassName('artist')
   let titles = document.getElementsByClassName('title')
 
   for (let i = 0; i < 5; i++) {
-    let trackIndex = (currentSongIndex - 2 + i)
+    let trackIndex = (MUSIC.currentSongIndex - 2 + i)
     if (trackIndex < 0) {
-      trackIndex += playlistSongs.length
-    } else if (trackIndex >= playlistSongs.length) {
-      trackIndex -= playlistSongs.length
+      trackIndex += MUSIC.currentPlaylistSongs.length
+    } else if (trackIndex >= MUSIC.currentPlaylistSongs.length) {
+      trackIndex -= MUSIC.currentPlaylistSongs.length
     }
-    artists[i].innerText = playlistSongs[trackIndex].track.artist
-    titles[i].innerText = playlistSongs[trackIndex].track.title
+    artists[i].innerText = MUSIC.currentPlaylistSongs[trackIndex].track.artist
+    titles[i].innerText = MUSIC.currentPlaylistSongs[trackIndex].track.title
   }
 }
 
 // use Fisher-Yates (aka Knuth) Shuffle (thanks stackoverflow!)
-function shuffleSongs (array) {
+MUSIC.shuffleSongs = function (array) {
   let currentIndex = array.length
-  let tempValue
-  let rndIndex
 
   while (currentIndex > 0) {
-    rndIndex = Math.floor(Math.random() * currentIndex)
+    let rndIndex = Math.floor(Math.random() * currentIndex)
     currentIndex--
-
-    tempValue = array[currentIndex]
+    let tempValue = array[currentIndex]
     array[currentIndex] = array[rndIndex]
     array[rndIndex] = tempValue
   }
-  return array
 }
-
-// ================================================================================
-// ==================== add event listeners to music control buttons ====================
-// ================================================================================
-
-document.getElementById('back').addEventListener('click', songBack)
-document.getElementById('play').addEventListener('click', playPause)
-document.getElementById('forward').addEventListener('click', songForward)
-document.getElementById('shuffle').addEventListener('click', songShuffle)
-document.getElementById('playlists').addEventListener('change', function () { changePlaylist(this.value) })

@@ -1,39 +1,13 @@
-var map
-var marker
-var currentLocation = {}
 
-function initMap () {
-  let start = {lat: 42, lng: -84}
-  map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 15,
-    center: start
-  })
-  marker = new google.maps.Marker({
-    position: start,
-    map: map
-  })
-}
+// ================================================================================
+// ==================== add event listeners to music control buttons ====================
+// ================================================================================
 
-function updateLocation () {
-  map.setCenter(currentLocation)
-  marker.setMap(null)
-  marker = new google.maps.Marker({
-    position: currentLocation,
-    map: map
-  })
-  document.getElementById('location').innerText = Math.round(currentLocation.lat * 10000) / 10000 + ', ' + Math.round(currentLocation.lng * 10000) / 10000
-}
+document.getElementById('back').addEventListener('click', MUSIC.songBack)
+document.getElementById('play').addEventListener('click', MUSIC.playPause)
+document.getElementById('forward').addEventListener('click', MUSIC.songForward)
+document.getElementById('shuffle').addEventListener('click', MUSIC.songShuffle)
+document.getElementById('playlists').addEventListener('change', function () { MUSIC.changePlaylist(this.value) })
 
-const socket = io()
-socket.open()
-socket.on('connect', function () {
-  console.log('Connected!')
-})
-socket.on('gpsData', function (data) {
-  document.getElementById('speed').innerText = Math.round(data.speed)
-  currentLocation.lat = data.lat
-  currentLocation.lng = data.lon
-  if (data.lat) {
-    updateLocation()
-  }
-})
+MUSIC.init()
+MAP.init()
