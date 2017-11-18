@@ -1,48 +1,29 @@
 // ==================== REQUIRE STATEMENTS ====================
 const EXPRESS = require('express')
-const APP = require('express')()
+const APP = EXPRESS()
 const SERVER = require('http').createServer(APP)
-const IO = require('socket.io')(SERVER)
 const PATH = require('path')
+const IO = require('socket.io')(SERVER)
 const REQUEST = require('request')
 const APIKEY = require('./private/API_KEY')
 const GPSD = require('node-gpsd')
-const PLAYMUSIC = require('playmusic')
-const MUSIC = new PLAYMUSIC()
-const GOOGLE = require('./private/playmusic')
+const GPS = require('./modules/gps')
+const PLAYLISTS = require('./modules/music').PLAYLISTS
+const MUSIC = require('./modules/music').MUSIC
 
 // ==================== MISC SETUP ====================
 
 APP.set('view engine', 'ejs')
 APP.use('/assets/', EXPRESS.static(PATH.join(__dirname, '/public')))
 APP.use('/', EXPRESS.static(__dirname))
-MUSIC.init(GOOGLE, function (err) {
-  if (err) console.error(err)
-  // place code here
-})
-var gpsData = {}
 
 // ==================== SETUP FOR GPSD DAEMON ====================
 
-const DAEMON = new GPSD.Daemon()
+// GPS.DAEMON.start(GPS.daemonInit)
 
-function daemonInit () {
-  console.log('GPSD Daemon Started')
+// ==================== SETUP FOR GOOGLE MUSIC ====================
 
-  const LISTENER = new GPSD.Listener()
-
-  LISTENER.on('TPV', function (tpv) {
-    gpsData = tpv
-    return gpsData
-  })
-
-  LISTENER.connect(function () {
-    console.log('Connected')
-    LISTENER.watch()
-  })
-}
-
-DAEMON.start(daemonInit)
+PLAYLISTS.getData()
 
 // ============================================================
 // ==================== ROUTES SETUP ====================
@@ -51,8 +32,8 @@ APP.get('/', function (req, res) {
   IO.on('connection', function (socket) {
     console.log('Socket.io running')
     setInterval(function () {
-      if (gpsData) {
-        socket.emit('gpsData', gpsData)
+      if (GPS.data) {
+        socket.emit('gpsData', GPS.data)
       }
     }, 1000)
   })
@@ -61,22 +42,10 @@ APP.get('/', function (req, res) {
 
 // client makes request to /music, gets back obj with playlists and all their songs
 APP.get('/music/', function (req, res) {
-  MUSIC.getPlayListEntries(function (err, entries) {
-    if (err) {
-      console.log(err)
-    } else {
-      MUSIC.getPlayLists(function (err, playlists) {
-        if (err) {
-          console.log(err)
-        } else {
-          let allPlaylistInfo = {}
-          allPlaylistInfo.playlists = playlists.data.items
-          allPlaylistInfo.songs = entries.data.items
-          res.send(JSON.stringify(allPlaylistInfo))
-        }
-      })
-    }
-  })
+  if (!PLAYLISTS.names) {
+    PLAYLISTS.getData()
+  }
+  res.send(JSON.stringify(PLAYLISTS))
 })
 
 // client requests song stream by storeId
