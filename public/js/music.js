@@ -1,6 +1,4 @@
 // TODO: make buttons prettier, deal with play() promises better (use load() instead?),
-// give variables better names, automatically go to next song,
-// clean this file up!
 
 // Put everything into one const to minimize global variables/functions
 const MUSIC = {
