@@ -44,6 +44,8 @@ MUSIC.playPause = function () {
     MUSIC.songNowPlaying.play()
   } else if (MUSIC.songNowPlaying && !MUSIC.songNowPlaying.paused) {
     MUSIC.songNowPlaying.pause()
+    document.getElementsByClassName('fa-play')[0].classList.remove('hidden')
+    document.getElementsByClassName('fa-pause')[0].classList.add('hidden')
   } else {
     MUSIC.playSong()
   }
@@ -83,6 +85,8 @@ MUSIC.playSong = function () {
   MUSIC.songNowPlaying = new Audio(['/music/' + MUSIC.currentPlaylistSongs[MUSIC.currentSongIndex].track.storeId])
   MUSIC.songNowPlaying.addEventListener('ended', MUSIC.songForward)
   MUSIC.songNowPlaying.play()
+  document.getElementsByClassName('fa-play')[0].classList.add('hidden')
+  document.getElementsByClassName('fa-pause')[0].classList.remove('hidden')
   MUSIC.updateSongsDisplay()
 }
 

@@ -20,6 +20,9 @@ option {
   text-align: center;
   font-size: 30px;
 }
+.hidden {
+  display: none;
+}
 .artist {
   width: 150px;
 }
