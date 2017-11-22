@@ -31,7 +31,9 @@ SOCKET.on('connect', function () {
   console.log('Connected!')
 })
 SOCKET.on('gpsData', function (data) {
-  MAP.currentLocation.lat = data.lat
-  MAP.currentLocation.lng = data.lon
-  MAP.updateDisplay()
+  if (data.lat) {
+    MAP.currentLocation.lat = data.lat
+    MAP.currentLocation.lng = data.lon
+    MAP.updateDisplay()
+  }
 })
