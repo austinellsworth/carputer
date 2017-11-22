@@ -1,6 +1,18 @@
 # Carputer
 
-## Shopping List:
+## Helpful Guides, Documentation, and Other Resources
+
+I've assembled a list of resources I found helpful for this project. View them [here](https://www.github.com/austinellsworth/carputer_resources).
+
+## My YouTube Channel
+
+To see the process of building the carputer, check out my YouTube channel.
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=0kpCKH1egPs
+" target="_blank"><img src="http://img.youtube.com/vi/0kpCKH1egPs/0.jpg" 
+alt="Building a Raspberry Pi Carputer" width="240" height="180" border="10" /></a>
+
+## Parts Used:
 
 ### Core Components
 
