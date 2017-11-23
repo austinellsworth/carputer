@@ -94,16 +94,28 @@ MUSIC.playSong = function () {
 MUSIC.updateSongsDisplay = function () {
   let artists = document.getElementsByClassName('artist')
   let titles = document.getElementsByClassName('title')
-
-  for (let i = 0; i < 5; i++) {
-    let trackIndex = (MUSIC.currentSongIndex - 2 + i)
+  let numberToDisplay = PAGE.songsToDisplay || 3
+  let indexModifier = (numberToDisplay - 1) / 2
+  for (let i = 0; i < numberToDisplay; i++) {
+    let trackIndex = (MUSIC.currentSongIndex - indexModifier + i)
     if (trackIndex < 0) {
       trackIndex += MUSIC.currentPlaylistSongs.length
     } else if (trackIndex >= MUSIC.currentPlaylistSongs.length) {
       trackIndex -= MUSIC.currentPlaylistSongs.length
     }
-    artists[i].innerText = MUSIC.currentPlaylistSongs[trackIndex].track.artist
-    titles[i].innerText = MUSIC.currentPlaylistSongs[trackIndex].track.title
+    if (trackIndex === MUSIC.currentSongIndex) {
+      artists[i].innerHTML = '<strong>' + MUSIC.currentPlaylistSongs[trackIndex].track.artist + '</strong>'
+      titles[i].innerHTML = '<strong>' + MUSIC.currentPlaylistSongs[trackIndex].track.title + '</strong>'
+    } else {
+      artists[i].innerHTML = MUSIC.currentPlaylistSongs[trackIndex].track.artist
+      titles[i].innerHTML = MUSIC.currentPlaylistSongs[trackIndex].track.title
+    }
+  }
+  if (numberToDisplay < artists.length) {
+    for (let i = numberToDisplay; i < artists.length; i++) {
+      artists[i].innerHTML = ''
+      titles[i].innerHTML = ''
+    }
   }
 }
 
