@@ -19,6 +19,7 @@
         <select id="playlists"></select>
         
         <button id="shuffle"><i class="fa fa-random fa-3x" aria-hidden="true"></i></button>
+        <button onclick="window.location.href='/reset-music'" id="reset-music"><i class="fa fa-refresh fa-3x" aria-hidden="true"></i></button>
       </div>
       <table id="songs-list">
         <tr>
@@ -114,6 +115,9 @@
     </span>
     <span><button class="nav-button" id="music-button"><i class="fa fa-music fa-3x" aria-hidden="true"></i><br></button></span>
     <span><button class="nav-button" id="dash-button"><i class="fa fa-car fa-3x" aria-hidden="true"></i><br></button></span>
+    <span class="status-icons">
+      <i id="wifi-status" class="fa fa-wifi fa-2x" aria-hidden="true"></i>
+    </span>
   </nav>
   
   <script src="private/apikey"></script>

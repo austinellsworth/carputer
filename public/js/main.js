@@ -55,6 +55,14 @@ const PAGE = {
   }
 }
 
+// Event listener for Online status
+window.addEventListener('online', () => {
+  document.getElementById('wifi-status').classList.remove('danger')
+})
+window.addEventListener('offline', () => {
+  document.getElementById('wifi-status').classList.add('danger')
+})
+
 // Event listener for brightness adjustment
 document.getElementById('brightness-button').addEventListener('click', PAGE.toggleBrightness)
 

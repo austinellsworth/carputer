@@ -45,10 +45,11 @@ APP.get('/', function (req, res) {
 // ==================== GOOGLE PLAY MUSIC ROUTES ====================
 
 // client makes request to /music, gets back obj with playlists and all their songs
-APP.get('/music/', function (req, res) {
+APP.get('/music', function (req, res) {
   if (!PLAYLISTS.playlists.names) {
     PLAYLISTS.getData()
   }
+  console.log('sending music data')
   res.send(JSON.stringify(PLAYLISTS.playlists))
 })
 
@@ -61,6 +62,12 @@ APP.get('/music/:song', function (req, res) {
       stream.pipe(res)
     }
   })
+})
+
+APP.get('/reset-music', function (req, res) {
+  PLAYLISTS.getData()
+  console.log('resetting music')
+  res.redirect('/')
 })
 
 // ==================== GOOGLE MAPS API ROUTE ====================
