@@ -15,6 +15,17 @@ const PAGE = {
   toggleBrightness: () => {
     document.getElementById('container').classList.toggle('night-mode')
   },
+  toggleFullScreen: () => {
+    if (window.innerHeight === screen.height) {
+      document.webkitCancelFullScreen()
+      document.getElementById('fullscreen-icon').classList.remove('hidden')
+      document.getElementById('cancel-fullscreen-icon').classList.add('hidden')
+    } else {
+      document.documentElement.webkitRequestFullscreen()
+      document.getElementById('fullscreen-icon').classList.add('hidden')
+      document.getElementById('cancel-fullscreen-icon').classList.remove('hidden')
+    }
+  },
   resetClassList: () => {
     for (let element in PAGE.elements) {
       PAGE.elements[element].classList.remove('grid-view')
@@ -70,6 +81,7 @@ window.addEventListener('offline', () => {
 // Event listeners for settings buttons
 document.getElementById('settings-button').addEventListener('click', PAGE.toggleSettings)
 document.getElementById('brightness-button').addEventListener('click', PAGE.toggleBrightness)
+document.getElementById('fullscreen-toggle-button').addEventListener('click', PAGE.toggleFullScreen)
 
 // Event listeners for page display buttons
 document.getElementById('home-button').addEventListener('click', PAGE.gridView)
