@@ -18,13 +18,11 @@ const PAGE = {
   toggleFullScreen: () => {
     if (window.innerHeight === screen.height) {
       document.webkitCancelFullScreen()
-      document.getElementById('fullscreen-icon').classList.remove('hidden')
-      document.getElementById('cancel-fullscreen-icon').classList.add('hidden')
     } else {
       document.documentElement.webkitRequestFullscreen()
-      document.getElementById('fullscreen-icon').classList.add('hidden')
-      document.getElementById('cancel-fullscreen-icon').classList.remove('hidden')
     }
+    document.getElementById('fullscreen-icon').classList.toggle('hidden')
+    document.getElementById('cancel-fullscreen-icon').classList.toggle('hidden')
   },
   resetClassList: () => {
     for (let element in PAGE.elements) {
