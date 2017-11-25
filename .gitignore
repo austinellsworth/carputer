@@ -2,5 +2,6 @@ node_modules/
 private/
 public/js/lib/
 public/fonts
+public/img/wallpapers/
 public/css/font-awesome.min.css
 .env

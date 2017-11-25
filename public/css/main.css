@@ -15,6 +15,7 @@ h3 {
 body {
   box-sizing: border-box;
   margin: 0;
+  background-image: url('../img/wallpapers/maggiewallpaper.jpg');
 }
 select {
   width: 100%;
@@ -27,6 +28,7 @@ option {
 table {
   border: none;
   color: inherit;
+  background-color: rgba(200,200,200,.5);
 }
 input,
 textarea,
@@ -116,7 +118,7 @@ select {
   text-align: center;
 }
 #now-playing-popup-text {
-  background: white;
+  background: rgba(200,200,200,.5);
   line-height: 30px;
   font-size: 25px;
 }
@@ -140,5 +142,5 @@ select {
   justify-content: space-evenly;
   width: 800px;
   height: 60px;
-  background-color: #919191;
+  background-color: rgba(200,200,200,.5);
 }
