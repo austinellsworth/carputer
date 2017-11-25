@@ -28,6 +28,21 @@ table {
   border: none;
   color: inherit;
 }
+input,
+textarea,
+select,
+a { 
+  outline: none; 
+}
+select:focus {
+  background-color: none;
+}
+select {
+  -webkit-appearance: none;
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+}
 .hidden {
   display: none;
 }

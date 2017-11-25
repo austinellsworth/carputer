@@ -23,10 +23,11 @@ MUSIC.init = function () {
 
   // add playlists to select menu
   function updatePlaylistDisplay (data) {
-    data.names.forEach(function (playlist) {
+    data.names.forEach(function (playlist, i) {
       let option = document.createElement('option')
+      let playlistNumber = i + 1
       option.value = playlist.id
-      option.innerText = playlist.name
+      option.innerText = playlistNumber + '. ' + playlist.name
       document.getElementById('playlists').appendChild(option)
     })
   }
