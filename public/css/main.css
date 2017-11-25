@@ -91,6 +91,20 @@ table {
 #music-controls {
   text-align: center;
 }
+#now-playing-popup {
+  position: relative;
+  bottom: 30px;
+  margin: 0 auto;
+  z-index: 999;
+  height: 30px;
+  border: none;
+  text-align: center;
+}
+#now-playing-popup-text {
+  background: white;
+  line-height: 30px;
+  font-size: 25px;
+}
 #container {
   display: flex;
   flex-wrap: wrap;

@@ -43,6 +43,8 @@ MUSIC.changePlaylist = function (selection) {
 MUSIC.playPause = function () {
   if (MUSIC.songNowPlaying && MUSIC.songNowPlaying.paused) {
     MUSIC.songNowPlaying.play()
+    document.getElementsByClassName('fa-play')[0].classList.add('hidden')
+    document.getElementsByClassName('fa-pause')[0].classList.remove('hidden')
   } else if (MUSIC.songNowPlaying && !MUSIC.songNowPlaying.paused) {
     MUSIC.songNowPlaying.pause()
     document.getElementsByClassName('fa-play')[0].classList.remove('hidden')
@@ -89,6 +91,18 @@ MUSIC.playSong = function () {
   document.getElementsByClassName('fa-play')[0].classList.add('hidden')
   document.getElementsByClassName('fa-pause')[0].classList.remove('hidden')
   MUSIC.updateSongsDisplay()
+  MUSIC.nowPlayingPopup()
+}
+
+MUSIC.nowPlayingPopup = function () {
+  let popup = document.getElementById('now-playing-popup')
+  let currentArtist = MUSIC.currentPlaylistSongs[MUSIC.currentSongIndex].track.artist
+  let currentTitle = MUSIC.currentPlaylistSongs[MUSIC.currentSongIndex].track.title
+  popup.innerHTML = '<span id="now-playing-popup-text">' + currentArtist + ' - ' + currentTitle + '</span'
+  popup.classList.remove('hidden')
+  setTimeout(() => {
+    popup.classList.add('hidden')
+  }, 2000)
 }
 
 // update the table which displays artist/title
