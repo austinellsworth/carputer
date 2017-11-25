@@ -110,14 +110,11 @@ MUSIC.nowPlayingPopup = function () {
 MUSIC.updateSongsDisplay = function () {
   let artists = document.getElementsByClassName('artist')
   let titles = document.getElementsByClassName('title')
-  let numberToDisplay = PAGE.songsToDisplay || 5
-  let indexModifier = (numberToDisplay - 1) / 2
+  let numberToDisplay = PAGE.songsToDisplay || 3
   for (let i = 0; i < numberToDisplay; i++) {
-    let trackIndex = (MUSIC.currentSongIndex - indexModifier + i)
+    let trackIndex = MUSIC.currentSongIndex + i
    // First deal with wrapping around beginning and end of list
-    if (trackIndex < 0) {
-      trackIndex += MUSIC.currentPlaylistSongs.length
-    } else if (trackIndex >= MUSIC.currentPlaylistSongs.length) {
+    if (trackIndex >= MUSIC.currentPlaylistSongs.length) {
       trackIndex -= MUSIC.currentPlaylistSongs.length
     }
     // Now add special HTML to currently-playing song
