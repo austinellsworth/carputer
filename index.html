@@ -6,7 +6,13 @@
 </head>
 <body>
   <div class="night-mode" id="container">
-    <button class="small-button" id="brightness-button" ><i class="fa fa-adjust fa-3x" aria-hidden="true"></i></button>
+    <span id="settings">
+      <button class="small-button" id="settings-button"><i class="fa fa-cog fa-3x" aria-hidden="true"></i></button>
+      <span class="hidden" id="settings-dropdown">
+        <button class="small-button" id="brightness-button"><i class="fa fa-adjust fa-3x" aria-hidden="true"></i></button>
+        <button class="small-button" onclick="window.location.href='/reset-music'" id="reset-music"><i class="fa fa-refresh fa-3x" aria-hidden="true"></i></button>
+      </span>
+    </span>    
     <div class="grid-view" id="map">
     MAP GOES HERE
     </div>
@@ -17,9 +23,6 @@
     <div class="grid-view" id="music">
       <div>
         <select id="playlists"></select>
-        
-        <button class="small-button" id="shuffle"><i class="fa fa-random fa-3x" aria-hidden="true"></i></button>
-        <button class="small-button" onclick="window.location.href='/reset-music'" id="reset-music"><i class="fa fa-refresh fa-3x" aria-hidden="true"></i></button>
       </div>
       <table id="songs-list">
         <tr>
@@ -112,6 +115,7 @@
       <button class="small-button" id="back"><i class="fa fa-fast-backward fa-3x" aria-hidden="true"></i></button>
       <button class="small-button" id="play"><i class="fa fa-play fa-3x hidden" aria-hidden="true"></i><i class="fa fa-pause fa-3x" aria-hidden="true"></i></button>
       <button class="small-button" id="forward"><i class="fa fa-fast-forward fa-3x" aria-hidden="true"></i></button>
+      <button class="small-button" id="shuffle"><i class="fa fa-random fa-3x" aria-hidden="true"></i></button>
     </span>
     <span><button class="nav-button" id="music-button"><i class="fa fa-music fa-3x" aria-hidden="true"></i><br></button></span>
     <span><button class="nav-button" id="dash-button"><i class="fa fa-car fa-3x" aria-hidden="true"></i><br></button></span>

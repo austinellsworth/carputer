@@ -9,6 +9,7 @@ const MUSIC = {
 
 // Ask server for list of playlists and songs.
 MUSIC.init = function () {
+  // when server responds, use the data to update displayed playlists. Then start playing first playlist.
   function reqListener () {
     let serverResponse = JSON.parse(this.responseText)
     MUSIC.playlists = serverResponse
@@ -77,7 +78,7 @@ MUSIC.songShuffle = function () {
   MUSIC.currentSongIndex = 0
   MUSIC.playSong()
 }
-// set function to use below with event listeners. gets index of current song, pulls that from MUSIC.currentPlaylistSongs array, plays it
+// set function to use with event listeners. gets index of current song, pulls that from MUSIC.currentPlaylistSongs array, plays it
 MUSIC.playSong = function () {
   if (MUSIC.songNowPlaying) {
     MUSIC.songNowPlaying.pause()
@@ -94,23 +95,26 @@ MUSIC.playSong = function () {
 MUSIC.updateSongsDisplay = function () {
   let artists = document.getElementsByClassName('artist')
   let titles = document.getElementsByClassName('title')
-  let numberToDisplay = PAGE.songsToDisplay || 3
+  let numberToDisplay = PAGE.songsToDisplay || 5
   let indexModifier = (numberToDisplay - 1) / 2
   for (let i = 0; i < numberToDisplay; i++) {
     let trackIndex = (MUSIC.currentSongIndex - indexModifier + i)
+   // First deal with wrapping around beginning and end of list
     if (trackIndex < 0) {
       trackIndex += MUSIC.currentPlaylistSongs.length
     } else if (trackIndex >= MUSIC.currentPlaylistSongs.length) {
       trackIndex -= MUSIC.currentPlaylistSongs.length
     }
+    // Now add special HTML to currently-playing song
     if (trackIndex === MUSIC.currentSongIndex) {
-      artists[i].innerHTML = '<strong>' + MUSIC.currentPlaylistSongs[trackIndex].track.artist + '</strong>'
-      titles[i].innerHTML = '<strong>' + MUSIC.currentPlaylistSongs[trackIndex].track.title + '</strong>'
+      artists[i].innerHTML = '<i class="fa fa-chevron-right" aria-hidden="true"></i><span class="now-playing">' + MUSIC.currentPlaylistSongs[trackIndex].track.artist + '</span>'
+      titles[i].innerHTML = '<span class="now-playing">' + MUSIC.currentPlaylistSongs[trackIndex].track.title + '</span>'
     } else {
       artists[i].innerHTML = MUSIC.currentPlaylistSongs[trackIndex].track.artist
       titles[i].innerHTML = MUSIC.currentPlaylistSongs[trackIndex].track.title
     }
   }
+  // Deal with situation when we have more places for tracks than tracks to display (like on grid view page)
   if (numberToDisplay < artists.length) {
     for (let i = numberToDisplay; i < artists.length; i++) {
       artists[i].innerHTML = ''

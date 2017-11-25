@@ -34,6 +34,11 @@ table {
 .danger {
   color: red;
 }
+.now-playing {
+  margin: 5px 0;
+  text-decoration: underline;
+  font-weight: bold;
+}
 .artist {
   width: 150px;
 }
@@ -67,18 +72,21 @@ table {
   background-color: black;
   color: white;
 }
-#brightness-button {
-  position: fixed;
-  top : 0;
-  right: 0;
-  z-index: 999;
-}
 .small-button {
   height: 60px;
   width: 60px;
   border: 2px solid black;
   border-radius: 10%;
   background-color: white;;
+}
+#settings {
+  display: flex;
+  flex-flow: column nowrap;
+  position: fixed;
+  top : 0;
+  right: 0;
+  width: 60px;
+  z-index: 999;
 }
 #music-controls {
   text-align: center;

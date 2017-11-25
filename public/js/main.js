@@ -3,11 +3,14 @@ MAP.init()
 
 // functions for page display changes
 const PAGE = {
-  songsToDisplay: 3,
+  songsToDisplay: 5,
   elements: {
     map: document.getElementById('map'),
     music: document.getElementById('music'),
     dash: document.getElementById('dash')
+  },
+  toggleSettings: () => {
+    document.getElementById('settings-dropdown').classList.toggle('hidden')
   },
   toggleBrightness: () => {
     document.getElementById('container').classList.toggle('night-mode')
@@ -32,7 +35,7 @@ const PAGE = {
       if (PAGE.elements.hasOwnProperty(element)) {
         PAGE.elements[element].classList.add('grid-view')
       }
-      PAGE.songsToDisplay = 3
+      PAGE.songsToDisplay = 5
       MUSIC.updateSongsDisplay()
     }
   },
@@ -45,7 +48,7 @@ const PAGE = {
     PAGE.resetClassList()
     PAGE.elements.music.classList.add('full-view')
     PAGE.hideOthers(PAGE.elements.music)
-    PAGE.songsToDisplay = 11
+    PAGE.songsToDisplay = 15
     MUSIC.updateSongsDisplay()
   },
   dashView: () => {
@@ -63,7 +66,8 @@ window.addEventListener('offline', () => {
   document.getElementById('wifi-status').classList.add('danger')
 })
 
-// Event listener for brightness adjustment
+// Event listeners for settings buttons
+document.getElementById('settings-button').addEventListener('click', PAGE.toggleSettings)
 document.getElementById('brightness-button').addEventListener('click', PAGE.toggleBrightness)
 
 // Event listeners for page display buttons
