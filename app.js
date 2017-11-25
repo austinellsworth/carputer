@@ -49,7 +49,6 @@ APP.get('/music', function (req, res) {
   if (!PLAYLISTS.playlists.names) {
     PLAYLISTS.getData()
   }
-  console.log('sending music data')
   res.send(JSON.stringify(PLAYLISTS.playlists))
 })
 
@@ -64,9 +63,9 @@ APP.get('/music/:song', function (req, res) {
   })
 })
 
+// When user clicks music reset button, re-connect to Google server, then reload index page
 APP.get('/reset-music', function (req, res) {
   PLAYLISTS.getData()
-  console.log('resetting music')
   res.redirect('/')
 })
 
