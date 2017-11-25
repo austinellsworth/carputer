@@ -43,6 +43,7 @@ const PAGE = {
     PAGE.resetClassList()
     PAGE.elements.map.classList.add('full-view')
     PAGE.hideOthers(PAGE.elements.map)
+    MAP.init()
   },
   musicView: () => {
     PAGE.resetClassList()
