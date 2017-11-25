@@ -71,12 +71,9 @@ table {
   position: fixed;
   top : 0;
   right: 0;
+  z-index: 999;
 }
-#back,
-#play,
-#forward,
-#shuffle,
-#reset-music {
+.small-button {
   height: 60px;
   width: 60px;
   border: 2px solid black;
