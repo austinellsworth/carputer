@@ -14,6 +14,7 @@ const PLAYLISTS = {
     names: []
   },
   assignSongstoPlaylists: function (data) {
+    PLAYLISTS.playlists.names = []
     data.playlists.forEach(function (playlist) {
       let id = playlist.id
       PLAYLISTS.playlists.names.push(playlist)
