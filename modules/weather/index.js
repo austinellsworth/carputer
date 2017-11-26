@@ -1,12 +1,13 @@
 require('dotenv').config()
+const CONFIG = require('../../config')
 const REQUEST = require('request')
 const GPS = require('../gps')
 
 const WEATHER = {
   data: {},
   retreiveWeatherData: function () {
-    let lat = GPS.data.lat
-    let lon = GPS.data.lon
+    let lat = GPS.data.lat || CONFIG.defaultLocation.lat
+    let lon = GPS.data.lon || CONFIG.defaultLocation.lon
     if (lat && lon && GPS.currentSocket) {
       console.log('Getting Weather...')
       WEATHER.makeWeatherRequests(lat, lon, function () {
@@ -18,7 +19,7 @@ const WEATHER = {
   startWeatherLoop: function () {
     if (!WEATHER.isLooping) {
       WEATHER.retreiveWeatherData()
-      setInterval(WEATHER.retreiveWeatherData, process.env.WEATHER_INTERVAL)
+      setInterval(WEATHER.retreiveWeatherData, CONFIG.weatherUpdateInterval)
       WEATHER.isLooping = true
     } else {
       GPS.currentSocket.emit('weatherData', WEATHER.data)
@@ -48,5 +49,3 @@ const WEATHER = {
 }
 
 module.exports = WEATHER
-
-

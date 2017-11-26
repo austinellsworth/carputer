@@ -1,6 +1,6 @@
 // ==================== REQUIRE STATEMENTS ====================
-// todo: make a config.js file rather than using .env for things which don't need to be private
 require('dotenv').config()
+const CONFIG = require('./config')
 const EXPRESS = require('express')
 const APP = EXPRESS()
 const SERVER = require('http').createServer(APP)
@@ -20,9 +20,6 @@ APP.use('/', EXPRESS.static(__dirname))
 // ==================== SETUP FOR GPSD DAEMON ====================
 if (process.env.ENVIRONMENT !== 'dev') {
   GPS.DAEMON.start(GPS.daemonInit)
-} else { // DEV PURPOSES ONLY. REMOVE THESE
-  GPS.data.lat = 42 // DEV PURPOSES ONLY. REMOVE THESE
-  GPS.data.lon = -84 // DEV PURPOSES ONLY. REMOVE THESE
 }
 
 // ==================== SETUP FOR GOOGLE MUSIC ====================
@@ -91,6 +88,6 @@ APP.get('/private/apikey/', function (req, res) {
 })
 
 // ==================== LISTEN ON PORT 8000 ====================
-SERVER.listen(process.env.PORT, function () {
+SERVER.listen(CONFIG.port, function () {
   console.log('Rav4Pi server is running!')
 })
