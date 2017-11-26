@@ -1,4 +1,5 @@
 // ==================== REQUIRE STATEMENTS ====================
+// todo: make a config.js file rather than using .env for things which don't need to be private
 require('dotenv').config()
 const EXPRESS = require('express')
 const APP = EXPRESS()
@@ -29,6 +30,7 @@ if (process.env.ENVIRONMENT !== 'dev') {
 PLAYLISTS.getData()
 
 // ==================== SETUP FOR SOCKET.IO ====================
+// expose socket to GPS and WEATHER so we can emit data from there as it arrives rather than running loops here
 function exposeSocket (socket) {
   GPS.currentSocket = socket
   WEATHER.currentSocket = socket
