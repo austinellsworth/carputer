@@ -37,3 +37,9 @@ SOCKET.on('gpsData', function (data) {
     MAP.updateDisplay()
   }
 })
+SOCKET.on('weatherData', function (data) {
+  let short = data.current_observation
+  document.getElementById('temp-now').innerText = Math.round(short.temp_f) + '\u00B0'
+  document.getElementById('current-location').innerText = short.display_location.full
+  document.getElementById('weather-icon').setAttribute('src', short.icon_url)
+})

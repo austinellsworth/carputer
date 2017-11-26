@@ -19,6 +19,7 @@
     </div>
     <div class="grid-view" id="dash">
       <h2 id="location">LOADING</h2>
+      <h2 id="current-location"></h2>
       <h1 id="speed">...</h1>
     </div>
     <div class="grid-view" id="music">
@@ -121,7 +122,9 @@
     <span><button class="nav-button" id="music-button"><i class="fa fa-music fa-3x" aria-hidden="true"></i><br></button></span>
     <span><button class="nav-button" id="dash-button"><i class="fa fa-car fa-3x" aria-hidden="true"></i><br></button></span>
     <span class="status-icons">
-      <i id="wifi-status" class="fa fa-wifi fa-2x" aria-hidden="true"></i>
+      <span id="temp-now"></span>
+      <img id="weather-icon">
+      <span><i id="wifi-status" class="fa fa-wifi" aria-hidden="true"></i></span>
     </span>
   </nav>
   <div class="hidden" id="now-playing-popup">TEST ARTIST - TEST TRACK NAME</div>

@@ -63,7 +63,7 @@ select {
   width: 250px;
 }
 .nav-button {
-  width: 100px;
+  width: 80px;
   height: 60px;
   text-transform: uppercase;
   border-radius: 15%;
@@ -84,6 +84,8 @@ select {
   height: 60px;
   justify-content: space-evenly;
   align-items: center;
+  font-size: 40px;
+  width: 180px;
 }
 .night-mode {
   background-color: black;
@@ -94,7 +96,17 @@ select {
   width: 60px;
   border: 2px solid black;
   border-radius: 10%;
-  background-color: white;;
+  background-color: white;
+}
+#play {
+  background-color: rgb(180,180,180);
+}
+#back,
+#forward {
+  background-color: rgb(150,150,150);
+}
+#shuffle {
+  background-color: rgb(200,200,200); 
 }
 #settings {
   display: flex;
@@ -135,7 +147,6 @@ select {
   text-align: center;
   font-size: 80px;
 }
-
 #bottom-navbar {
   position: fixed;
   bottom: 0;
@@ -144,4 +155,7 @@ select {
   width: 800px;
   height: 60px;
   background-color: rgba(200,200,200,.5);
+}
+#wifi-status {
+  width: 30px;
 }
