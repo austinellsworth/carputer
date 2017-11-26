@@ -19,27 +19,36 @@ APP.use('/', EXPRESS.static(__dirname))
 
 // ==================== SETUP FOR CUSTOM EVENTS ====================
 
-class MyEmitter extends EVENTEMITTER {}
+// class MyEmitter extends EVENTEMITTER {}
 
-const MYEMITTER = new MyEmitter()
-MYEMITTER.on('weather', () => {
+// const MYEMITTER = new MyEmitter()
+// MYEMITTER.on('weather', () => {
 
-})
-MYEMITTER.emit('weather')
+// })
+// MYEMITTER.emit('weather')
 
 // ==================== SETUP FOR WEATHER DATA ====================
-
-setInterval(function () {
-  let lon = GPS.data.lon
+function retreiveWeatherData () {
   let lat = GPS.data.lat
-  if (lon && lat) {
+  let lon = GPS.data.lon
+  if (lat && lon && currentSocket) {
     console.log('Getting Weather...')
     WEATHER.getWeatherData(lat, lon, function () {
       console.log(WEATHER.data.current_observation.temp_f + 'F')
-      MYEMITTER.emit('weather', WEATHER.data)
+      currentSocket.emit('weatherData', WEATHER.data)
     })
   }
-}, process.env.WEATHER_INTERVAL)
+}
+
+function startWeatherLoop () {
+  if (!WEATHER.isLooping) {
+    retreiveWeatherData()
+    setInterval(retreiveWeatherData, process.env.WEATHER_INTERVAL)
+    WEATHER.isLooping = true
+  } else {
+    currentSocket.emit('weatherData', WEATHER.data)
+  }
+}
 
 // ==================== SETUP FOR GPSD DAEMON ====================
 if (process.env.ENVIRONMENT !== 'dev') {
@@ -62,25 +71,16 @@ if (process.env.ENVIRONMENT !== 'dev') {
 PLAYLISTS.getData()
 
 // ==================== SETUP FOR SOCKET.IO ====================
-
+var currentSocket
 IO.on('connection', function (socket) {
+  currentSocket = socket
   console.log('Socket.io running')
   setInterval(function () {
     if (GPS.data) {
       socket.emit('gpsData', GPS.data)
     }
   }, 1000)
-  setInterval(function () {
-    let lon = GPS.data.lon
-    let lat = GPS.data.lat
-    if (lon && lat) {
-      console.log('Getting Weather...')
-      WEATHER.getWeatherData(lat, lon, function () {
-        console.log(WEATHER.data.current_observation.temp_f + 'F')
-        socket.emit('weatherData', WEATHER.data)
-      })
-    }
-  }, 60000) // process.env.WEATHER_INTERVAL)
+  startWeatherLoop()
 })
 
 // ==================== ROUTES ====================
