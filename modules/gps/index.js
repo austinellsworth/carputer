@@ -10,6 +10,9 @@ const GPS = {
 
     LISTENER.on('TPV', function (tpv) {
       GPS.data = tpv
+      if (GPS.currentSocket) {
+        GPS.currentSocket.emit('gpsData', GPS.data)
+      }
     })
 
     LISTENER.connect(function () {

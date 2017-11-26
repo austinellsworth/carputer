@@ -10,32 +10,21 @@ const GPS = require('./modules/gps')
 const PLAYLISTS = require('./modules/music').PLAYLISTS
 const MUSIC = require('./modules/music').MUSIC
 const WEATHER = require('./modules/weather')
-const EVENTEMITTER = require('events')
 
 // ==================== MISC SETUP ====================
 
 APP.use('/assets/', EXPRESS.static(PATH.join(__dirname, '/public')))
 APP.use('/', EXPRESS.static(__dirname))
 
-// ==================== SETUP FOR CUSTOM EVENTS ====================
-
-// class MyEmitter extends EVENTEMITTER {}
-
-// const MYEMITTER = new MyEmitter()
-// MYEMITTER.on('weather', () => {
-
-// })
-// MYEMITTER.emit('weather')
-
 // ==================== SETUP FOR WEATHER DATA ====================
 function retreiveWeatherData () {
   let lat = GPS.data.lat
   let lon = GPS.data.lon
-  if (lat && lon && currentSocket) {
+  if (lat && lon && GPS.currentSocket) {
     console.log('Getting Weather...')
     WEATHER.getWeatherData(lat, lon, function () {
       console.log(WEATHER.data.current_observation.temp_f + 'F')
-      currentSocket.emit('weatherData', WEATHER.data)
+      GPS.currentSocket.emit('weatherData', WEATHER.data)
     })
   }
 }
@@ -46,7 +35,7 @@ function startWeatherLoop () {
     setInterval(retreiveWeatherData, process.env.WEATHER_INTERVAL)
     WEATHER.isLooping = true
   } else {
-    currentSocket.emit('weatherData', WEATHER.data)
+    GPS.currentSocket.emit('weatherData', WEATHER.data)
   }
 }
 
@@ -56,14 +45,6 @@ if (process.env.ENVIRONMENT !== 'dev') {
 } else { // DEV PURPOSES ONLY. REMOVE THESE
   GPS.data.lat = 42 // DEV PURPOSES ONLY. REMOVE THESE
   GPS.data.lon = -84 // DEV PURPOSES ONLY. REMOVE THESE
-//   let lon = GPS.data.lon // DEV PURPOSES ONLY. REMOVE THESE
-//   let lat = GPS.data.lat // DEV PURPOSES ONLY. REMOVE THESE
-//   WEATHER.getWeatherData(lat, lon, function () { // DEV PURPOSES ONLY. REMOVE THESE
-//     console.log(WEATHER.data.current_observation.temp_f + 'F') // DEV PURPOSES ONLY. REMOVE THESE
-//     console.log(WEATHER.data.current_observation.weather) // DEV PURPOSES ONLY. REMOVE THESE
-//     console.log(WEATHER.data.current_observation.display_location.full) // DEV PURPOSES ONLY. REMOVE THESE
-//     console.log(WEATHER.data.current_observation.icon_url) // DEV PURPOSES ONLY. REMOVE THESE
-//   })
 }
 
 // ==================== SETUP FOR GOOGLE MUSIC ====================
@@ -71,15 +52,19 @@ if (process.env.ENVIRONMENT !== 'dev') {
 PLAYLISTS.getData()
 
 // ==================== SETUP FOR SOCKET.IO ====================
-var currentSocket
+function exposeSocket (socket) {
+  GPS.currentSocket = socket
+  WEATHER.currentSocket = socket
+}
+
 IO.on('connection', function (socket) {
-  currentSocket = socket
   console.log('Socket.io running')
-  setInterval(function () {
-    if (GPS.data) {
-      socket.emit('gpsData', GPS.data)
-    }
-  }, 1000)
+  exposeSocket(socket)
+  // setInterval(function () {
+  //   if (GPS.data) {
+  //     socket.emit('gpsData', GPS.data)
+  //   }
+  // }, 1000)
   startWeatherLoop()
 })
 
