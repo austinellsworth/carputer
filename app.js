@@ -1,5 +1,4 @@
 // ==================== REQUIRE STATEMENTS ====================
-// todo: make a config.js file rather than using .env for things which don't need to be private
 require('dotenv').config()
 const CONFIG = require('./config')
 const EXPRESS = require('express')
