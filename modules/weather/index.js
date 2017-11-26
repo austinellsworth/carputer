@@ -1,9 +1,30 @@
 require('dotenv').config()
 const REQUEST = require('request')
+const GPS = require('../gps')
 
 const WEATHER = {
   data: {},
-  getWeatherData: function (lat, lon, callback) {
+  retreiveWeatherData: function () {
+    let lat = GPS.data.lat
+    let lon = GPS.data.lon
+    if (lat && lon && GPS.currentSocket) {
+      console.log('Getting Weather...')
+      WEATHER.makeWeatherRequests(lat, lon, function () {
+        console.log(WEATHER.data.current_observation.temp_f + 'F')
+        GPS.currentSocket.emit('weatherData', WEATHER.data)
+      })
+    }
+  },
+  startWeatherLoop: function () {
+    if (!WEATHER.isLooping) {
+      WEATHER.retreiveWeatherData()
+      setInterval(WEATHER.retreiveWeatherData, process.env.WEATHER_INTERVAL)
+      WEATHER.isLooping = true
+    } else {
+      GPS.currentSocket.emit('weatherData', WEATHER.data)
+    }
+  },
+  makeWeatherRequests: function (lat, lon, callback) {
     let reqUrl = process.env.WEATHER_API + 'geolookup/q/' + lat + ',' + lon + '.json'
     REQUEST(reqUrl, function (err, res, body) {
       if (err) {
@@ -27,3 +48,5 @@ const WEATHER = {
 }
 
 module.exports = WEATHER
+
+

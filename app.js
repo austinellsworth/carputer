@@ -16,29 +16,6 @@ const WEATHER = require('./modules/weather')
 APP.use('/assets/', EXPRESS.static(PATH.join(__dirname, '/public')))
 APP.use('/', EXPRESS.static(__dirname))
 
-// ==================== SETUP FOR WEATHER DATA ====================
-function retreiveWeatherData () {
-  let lat = GPS.data.lat
-  let lon = GPS.data.lon
-  if (lat && lon && GPS.currentSocket) {
-    console.log('Getting Weather...')
-    WEATHER.getWeatherData(lat, lon, function () {
-      console.log(WEATHER.data.current_observation.temp_f + 'F')
-      GPS.currentSocket.emit('weatherData', WEATHER.data)
-    })
-  }
-}
-
-function startWeatherLoop () {
-  if (!WEATHER.isLooping) {
-    retreiveWeatherData()
-    setInterval(retreiveWeatherData, process.env.WEATHER_INTERVAL)
-    WEATHER.isLooping = true
-  } else {
-    GPS.currentSocket.emit('weatherData', WEATHER.data)
-  }
-}
-
 // ==================== SETUP FOR GPSD DAEMON ====================
 if (process.env.ENVIRONMENT !== 'dev') {
   GPS.DAEMON.start(GPS.daemonInit)
@@ -60,12 +37,7 @@ function exposeSocket (socket) {
 IO.on('connection', function (socket) {
   console.log('Socket.io running')
   exposeSocket(socket)
-  // setInterval(function () {
-  //   if (GPS.data) {
-  //     socket.emit('gpsData', GPS.data)
-  //   }
-  // }, 1000)
-  startWeatherLoop()
+  WEATHER.startWeatherLoop()
 })
 
 // ==================== ROUTES ====================
